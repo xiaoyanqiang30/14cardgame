@@ -1,0 +1,380 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Microsoft YaHei', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #1a5f1a 0%, #0d3d0d 100%);
+    color: #fff;
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container {
+    max-width: 1000px;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    margin-top: 20px;
+}
+
+.screen {
+    display: none;
+}
+
+    .screen.active {
+        display: block;
+    }
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #4CAF50;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #4CAF50;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 10px;
+}
+
+h2 {
+    color: #4CAF50;
+    margin: 15px 0 10px;
+}
+
+/* 大厅样式 */
+.lobby-content, .waiting-content, .game-over-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+}
+
+    .input-group label {
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .input-group input {
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 1rem;
+    }
+
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 300px;
+}
+
+.join-group {
+    display: flex;
+    gap: 10px;
+}
+
+    .join-group input {
+        flex: 1;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 1rem;
+    }
+
+button {
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+    button:hover {
+        background: #45a049;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    button:disabled {
+        background: #7f8c8d;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+.divider {
+    text-align: center;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.message {
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    width: 100%;
+    max-width: 300px;
+}
+
+    .message.error {
+        background: rgba(231, 76, 60, 0.3);
+        border: 1px solid #e74c3c;
+    }
+
+    .message.success {
+        background: rgba(46, 204, 113, 0.3);
+        border: 1px solid #2ecc71;
+    }
+
+/* 等待房间样式 */
+#players-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 300px;
+}
+
+.player-item {
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    text-align: center;
+}
+
+    .player-item.host::after {
+        content: " (房主)";
+        color: #f1c40f;
+    }
+
+/* 游戏界面样式 */
+.game-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 10px 15px;
+    border-radius: 10px;
+}
+
+.player-info {
+    display: flex;
+    gap: 20px;
+}
+
+.player {
+    padding: 10px 15px;
+    border-radius: 8px;
+    background: rgba(76, 175, 80, 0.2);
+    transition: all 0.3s;
+}
+
+    .player.current {
+        background: rgba(255, 215, 0, 0.3);
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+
+.game-area {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.face-up-cards {
+    text-align: center;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+}
+
+.cards-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.card {
+    width: 90px;
+    height: 130px;
+    background: white;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+    cursor: pointer;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    .card.selected {
+        border: 3px solid gold;
+        transform: translateY(-10px);
+    }
+
+    .card.hearts, .card.diamonds {
+        color: #e74c3c;
+    }
+
+    .card.spades, .card.clubs {
+        color: #2c3e50;
+    }
+
+    .card.joker {
+        background: linear-gradient(135deg, #8e44ad, #9b59b6);
+        color: white;
+    }
+
+.card-value {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.card-suit {
+    font-size: 2rem;
+    text-align: center;
+}
+
+.player-hand {
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.score-board {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.player-score {
+    text-align: center;
+    padding: 10px 20px;
+    background: rgba(76, 175, 80, 0.2);
+    border-radius: 8px;
+    min-width: 150px;
+}
+
+    .player-score.highlight {
+        background: rgba(255, 215, 0, 0.3);
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+
+.status-message {
+    text-align: center;
+    padding: 10px;
+    margin: 10px 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    font-size: 1.1rem;
+}
+
+.combination-preview {
+    text-align: center;
+    margin: 10px 0;
+    font-size: 1.2rem;
+    min-height: 30px;
+}
+
+/* 游戏结束界面样式 */
+#game-result {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.score-summary {
+    width: 100%;
+    max-width: 400px;
+}
+
+#final-scores {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.final-score-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+    .final-score-item.winner {
+        background: rgba(255, 215, 0, 0.3);
+        font-weight: bold;
+    }
+
+@media (max-width: 768px) {
+    .card {
+        width: 70px;
+        height: 105px;
+    }
+
+    .card-value {
+        font-size: 1.4rem;
+    }
+
+    .card-suit {
+        font-size: 1.6rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    .player-info {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .score-board {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
